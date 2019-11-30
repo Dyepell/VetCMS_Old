@@ -10,6 +10,7 @@ use app\models\Kattov;
 ?>
 
 <div class="container-fluid row" style="margin-top: 70px;margin-bottom: 50px;">
+    <H1>1231321321321321</H1>
     <?php $form = ActiveForm::begin(['options'=>['id'=>'priceForm']]) ?>
     <?= $form->field($model, 'ID_SALE')->textInput(['readonly'=>'readonly'])->label('ID')?>
     <?= $form->field($model, 'SOTRUDNIK')->dropDownList(
