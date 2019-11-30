@@ -1,0 +1,42 @@
+
+
+
+
+.p-0{
+    padding: 0px;
+}
+.clientPagination{
+    margin-top: 60px;
+
+    padding: 5px;
+
+    border-radius: 5px;
+}
+.clientLink:hover{
+    color: #c662f5;
+
+}
+.hr{
+    padding: 0px;
+    margin: 0px;
+
+
+}
+.clientInfo{
+    background-color: #f5f5f5;
+    margin-top: 60px;
+    border-radius: 5px;
+    margin-left: 20px;
+}
+.address{
+    ;
+}
+.pacient-form{
+    background-color: #ebebeb;
+
+    border-top: none;
+    border-radius: 3px;
+}
+.navbar.li{
+    font-size: 150% !important;
+}
