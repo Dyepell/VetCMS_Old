@@ -20,11 +20,11 @@ use yii\widgets\ActiveForm; ?>
     <?= $form->field($model, 'SUMM')->textInput(['autocomplete'=>'off','readonly'=>'readonly'])->label('Сумма')?>
     <?= $form->field($model, 'DATE')->textInput(['autocomplete'=>'off'])->label('Дата')?>
     <div class="row">
-        <div class="col-md-2"><?= Html::submitButton('Отправить',['class'=>'btn btn-success'])?></div>
+        <div class="col-md-2"><?= Html::submitButton('Сохранить',['class'=>'btn btn-success'])?></div>
 
         <?php if ($_GET['ID_PRIHOD']!=NULL):?>
             <div class="col-md-10" style="text-align: right">
-                <a href="index.php?r=client/prihoddelete&ID_PRIHOD=<?=$model->ID_PRIHOD?>" class="btn btn-danger" >Удалить</a>
+                <a href="index.php?r=client/prihoddelete&ID_PRIHOD=<?=$model->ID_PRIHOD?>" class="btn btn-danger"  onclick='return confirm("Вы уверены?")'>Удалить</a>
             </div>
         <?php endif;?>
     </div>

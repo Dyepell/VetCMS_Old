@@ -1343,10 +1343,10 @@ class ReportsController extends AppController
                         $pay->uzsumm=$pay->uzsumm+$fac->SUMMA;
                         break;
                     case 4:
-                        $pay->vakSumm=$pay->vakSumm+$fac->SUMMA;
+                        $pay->vakSumm=$pay->medSumm+$fac->SUMMA;
                         break;
                     case 5:
-                        $pay->medSumm=$pay->medSumm+$fac->SUMMA;
+                        $pay->medSumm=$pay->vakSumm+$fac->SUMMA;
                         break;
                     case 6:
                         $pay->degSumm=$pay->degSumm+$fac->SUMMA;
@@ -1386,9 +1386,10 @@ class ReportsController extends AppController
         $activeSheet=0;
         foreach ($pays as $pay){
             $sheet=$spreadsheet->getActiveSheet();
+
             $sheet->setCellValue('A1', 'ЗооДоктор');
             $sheet->setCellValue('D1', date("d.m.Y"));
-            $sheet->setCellValue('A2', 'Расчет зарплаты');
+            $sheet->setCellValue('A2', 'Расчет зарплаты - '.$pay->name);
             $sheet->setCellValue('A3', ' с ' . date("d.m.Y", strtotime($firstdate)) . ' по ' . date("d.m.Y", strtotime($secondtdate)));
             $sheet->mergeCells('A2:E2');
 
@@ -1402,8 +1403,8 @@ class ReportsController extends AppController
             $sheet->setCellValue('A5', 'Терапия');
             $sheet->setCellValue('A6', 'Хиругия');
             $sheet->setCellValue('A7', 'УЗИ');
-            $sheet->setCellValue('A8', 'Вакцинация');
-            $sheet->setCellValue('A9', 'Медикаменты');
+            $sheet->setCellValue('A8', 'Медикаменты');
+            $sheet->setCellValue('A9', 'Вакцинация');
             $sheet->setCellValue('A10', 'Дегельминтизация');
             $sheet->setCellValue('A11', 'Анализы');
             $sheet->setCellValue('A12', 'Корм');

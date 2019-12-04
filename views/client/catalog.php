@@ -45,7 +45,7 @@ use yii\widgets\ActiveForm; ?>
 
                                     $myurl='index.php?r=client/tovardelete&ID_TOV='.$key['ID_TOV'];
 
-                                    return Html::a('<span class="glyphicon glyphicon-trash" style="margin-left: 5px;"></span>', $myurl,[
+                                    return Html::a('<span class="glyphicon glyphicon-trash" style="margin-left: 5px;"  onclick=\'return confirm("Вы уверены?")\'></span>', $myurl,[
                                         'title' => Yii::t('app', 'Удалить'),
                                     ]);
                                 },],

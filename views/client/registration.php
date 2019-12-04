@@ -31,7 +31,7 @@ $form = ActiveForm::begin(['options'=>['id'=>'searchForm','data-pjax' => true,]]
     'autocomplete'=>'off',
     'onfocus'=>'var temp_value=this.value; this.value=\'\'; this.value=temp_value'])?>
 
-<?= Html::submitButton('Отправить',['class'=>'btn btn-success', 'id'=>'searchSubmit', 'style'=>'display:none;'])?>
+<?= Html::submitButton('Сохранить',['class'=>'btn btn-success', 'id'=>'searchSubmit', 'style'=>'display:none;'])?>
 
 
 
@@ -55,7 +55,7 @@ $form = ActiveForm::begin(['options'=>['id'=>'searchForm','data-pjax' => true,]]
 
                                 $myurl='index.php?r=client/clientdelete&clientId='.$key['ID_CL'];
 
-                                return Html::a('<span class="glyphicon glyphicon-trash" style="margin-left: 5px;"></span>', $myurl,[
+                                return Html::a('<span class="glyphicon glyphicon-trash" style="margin-left: 5px;" onclick=\'return confirm("Вы уверены?")\'></span>', $myurl,[
                                     'title' => Yii::t('app', 'Удалить'),
                                 ]);
                             },],
@@ -166,7 +166,7 @@ Pjax::end();?>
 
                                 $myurl='index.php?r=client/clientdelete&clientId='.$key['ID_CL'];
 
-                                return Html::a('<span class="glyphicon glyphicon-trash" style="margin-left: 5px;"></span>', $myurl,[
+                                return Html::a('<span class="glyphicon glyphicon-trash" style="margin-left: 5px;" onclick=\'return confirm("Вы уверены?")\'></span>', $myurl,[
                                     'title' => Yii::t('app', 'Удалить'),
                                 ]);
                             },],

@@ -21,6 +21,7 @@ use app\models\PriceForm;
 use app\models\Sale;
 use app\models\SaleForm;
 use app\models\SearchForm;
+use app\models\SearchModel;
 use app\models\SelectForm;
 use app\models\Diagnoz;
 use app\models\Price;
@@ -37,6 +38,8 @@ use app\models\Prihod_tovaraForm;
 use app\models\Prihod_tovara;
 use yii\helpers\StringHelper;
 use app\models\Pred_usl;
+use PhpOffice\PhpWord\PhpWord;
+
 
 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -481,46 +484,56 @@ class ClientController extends AppController
         return $this->redirect("index.php?r=client/doctor");
     }
     public function actionFacility(){
-        $facility = new FacilityForm();
-        $facility->DATA=date("d.m.Y");
-        $visit=Vizit::findOne(['ID_VISIT'=>$_GET['ID_VISIT']]);
-        $pacient=Pacient::findOne(['ID_PAC'=>$visit->ID_PAC]);
-        $client=Client::findOne(['ID_CL'=>$pacient->ID_CL]);
-        $facility->ID_CL=$client->ID_CL;
-        $facility->ID_PAC=$pacient->ID_PAC;
-        $ID_PAC=$facility->ID_PAC;
-
-        if ( $facility->load(Yii::$app->request->post()) ){
-            $facility->ID_VISIT=$_GET['ID_VISIT'];
-            $price=Price::findOne(['ID_PR'=>$facility->ID_PR]);
-            $facility->PRICE=$price->PRICE;
-            $facility->SUMMA=$price->PRICE * $facility->KOL;
-            $visit->DOLG=$visit->DOLG+$facility->SUMMA;
-            $visit->SUMMAV=$visit->SUMMAV + $facility->SUMMA;
-
-            $facility->DATA=date("Y-m-d", strtotime($facility->DATA));
-            if($facility->DATASL!=NULL){
-                $facility->DATASL=date('Y-m-d', strtotime($facility->DATASL));
-            }
-            if($facility->DATASL==''){
-                $facility->DATASL=NULL;
-            }
-
-            if($visit->DATE_OPL!=NULL){
-                $visit->DATE_OPL='';
-            }
-
-
-
-            $visit->save();
-            if ($facility->save()){
-
-                return $this->redirect("index.php?r=client/visit&ID_VISIT=".$_GET['ID_VISIT'].'&ID_PAC='.$ID_PAC);
-            }
+//        $facility = new FacilityForm();
+//        $facility->DATA=date("d.m.Y");
+//        $visit=Vizit::findOne(['ID_VISIT'=>$_GET['ID_VISIT']]);
+//        $pacient=Pacient::findOne(['ID_PAC'=>$visit->ID_PAC]);
+//        $client=Client::findOne(['ID_CL'=>$pacient->ID_CL]);
+//        $facility->ID_CL=$client->ID_CL;
+//        $facility->ID_PAC=$pacient->ID_PAC;
+//        $ID_PAC=$facility->ID_PAC;
+//
+//        if ( $facility->load(Yii::$app->request->post()) ){
+//            $facility->ID_VISIT=$_GET['ID_VISIT'];
+//            $price=Price::findOne(['ID_PR'=>$facility->ID_PR]);
+//            $facility->PRICE=$price->PRICE;
+//            $facility->SUMMA=$price->PRICE * $facility->KOL;
+//            $visit->DOLG=$visit->DOLG+$facility->SUMMA;
+//            $visit->SUMMAV=$visit->SUMMAV + $facility->SUMMA;
+//
+//            $facility->DATA=date("Y-m-d", strtotime($facility->DATA));
+//            if($facility->DATASL!=NULL){
+//                $facility->DATASL=date('Y-m-d', strtotime($facility->DATASL));
+//            }
+//            if($facility->DATASL==''){
+//                $facility->DATASL=NULL;
+//            }
+//
+//            if($visit->DATE_OPL!=NULL){
+//                $visit->DATE_OPL='';
+//            }
+//
+//
+//
+//            $visit->save();
+//            if ($facility->save()){
+//
+//                return $this->redirect("index.php?r=client/visit&ID_VISIT=".$_GET['ID_VISIT'].'&ID_PAC='.$ID_PAC);
+//            }
+//        }
+        $searchModel= new SearchModel();
+        $dataProvider=$searchModel->search(Yii::$app->request->get());
+        $dataProvider->pagination=false;
+        $doctors=Doctor::find()->all();
+        $doc=[];
+        for($i=0;$i<count($doctors); $i++)
+        {
+        $doc[$doctors[$i]->ID_DOC]=$doctors[$i]->NAME;
         }
 
 
-        return $this->render('facility', compact('facility'));
+
+        return $this->render('facility', compact('facility', 'dataProvider', 'searchModel', 'doc'));
     }
     public function actionIstbol(){
         if ($_GET['ID_IST']!=NULL){
@@ -1078,7 +1091,171 @@ public function actionCatalog(){
 
     }
 
+    public function actionNew_facility(){
+        $ID_VISIT=$_GET['ID_VISIT'];
+        $visit=Vizit::findOne(['ID_VISIT'=>$ID_VISIT]);
 
+        $doctor=$_GET['doctor'];
+
+       foreach ($_GET as $key => $item) {
+           if($key!='id'&&$key!='r' &&$key!='name'&&$key!='SearchModel'&&$key!='ID_VISIT'&&$key!='doctor'){
+               if($item!='') {
+                   $price=Price::findOne(['ID_PR'=>$key]);
+                   $facility=new FacilityForm();
+                   $facility->ID_PAC=$visit->ID_PAC;
+                   $facility->ID_CL=$visit->ID_CL;
+                   $facility->ID_DOC=$doctor;
+                   $facility->ID_PR=$key;
+                   $facility->PRICE=$price->PRICE;
+                   $facility->KOL=$item;
+                   $facility->SUMMA=$facility->KOL*$facility->PRICE;
+                   $facility->DATA=date('Y-m-d');
+                   $facility->ID_VISIT=$ID_VISIT;
+                   $visit->SUMMAV=$visit->SUMMAV+$facility->SUMMA;
+                   $visit->DOLG=$visit->DOLG+$facility->SUMMA;
+                   $facility->save();
+                   $visit->save();
+
+
+               }
+           }
+
+       }
+
+        return $this->redirect('index.php?r=client/facility&ID_VISIT='.$ID_VISIT);
+    }
+
+    public function actionDocagree(){
+        Yii::setAlias('@reports', Yii::$app->basePath . '/отчеты');
+        $visit=Vizit::findOne(['ID_VISIT'=>$_GET['ID_VISIT']]);
+        $pacient=Pacient::findOne(['ID_PAC'=>$visit->ID_PAC]);
+        $client=Client::findOne(['ID_CL'=>$pacient->ID_CL]);
+        $vid=Vid::findOne(['ID_VID'=>$pacient->ID_VID]);
+        $poroda=Poroda::findOne(['ID_POR'=>$pacient->ID_POR]);
+
+        $fio=$client->FAM.' '.$client->NAME.' '.$client->OTCH;
+        $adres=$client->STREET.' '.$client->HOUSE.'-'.$client->FLAT;
+        $document=new PhpWord();
+        $document->setDefaultFontName('Times New Roman');
+        $document->setDefaultFontSize(14);
+        $fontStyle = array( 'size'=>11, 'spaceAfter'=>0);
+        $document->addFontStyle('myTextStyle', $fontStyle); //myTextStyle - это имя стиля
+
+
+
+        $section = $document->addSection();
+
+
+
+        $document->addParagraphStyle('p2Style', array('align'=>'top', 'spaceAfter'=>0));
+        $section->addText('ЗооДоктор', 'myTextStyle', [ 'align' => \PhpOffice\PhpWord\SimpleType\Jc::CENTER , 'spaceAfter'=>0 ]);
+
+        $section->addText('тел. 7 (909) 726-94-49','myTextStyle', [ 'align' => \PhpOffice\PhpWord\SimpleType\Jc::CENTER ,'spaceAfter'=>0]);
+        $section->addTextBreak(1);
+        $section->addText('СОГЛАШЕНИЕ НА ТЕРАПЕВТИЧЕСКИЕ И ХИРУРГИЧЕСКИЕ МАНИПУЛЯЦИИ', ['bold'=>true ], [ 'align' => \PhpOffice\PhpWord\SimpleType\Jc::CENTER]);
+        $section->addTextBreak();
+
+        $section->addText('Дата: '.date('d.m.Y'), [], [ 'align' => \PhpOffice\PhpWord\SimpleType\Jc::BOTH]);
+        $section->addText('Ф.И.О. владельца: '.$fio, [], [ 'align' => \PhpOffice\PhpWord\SimpleType\Jc::BOTH]);
+        $section->addText('Адрес: '.$adres, [], [ 'align' => \PhpOffice\PhpWord\SimpleType\Jc::BOTH]);
+        $section->addText('Вид:  '.$vid->NAMEVID.'      Порода: '.$poroda->NAMEPOR, [], [ 'align' => \PhpOffice\PhpWord\SimpleType\Jc::BOTH]);
+        $section->addText('Кличка животного: '.$pacient->KLICHKA.'      Пол: '.$pacient->POL.'      Возраст:________', [], [ 'align' => \PhpOffice\PhpWord\SimpleType\Jc::BOTH ]);
+
+        $section->addText('      Я, владелец вышеуказанного животного (ответственное лицо), даю согласие на проведение следующих процедур:',[], [ 'align' => \PhpOffice\PhpWord\SimpleType\Jc::BOTH ]);
+        $section->addText('_______________________________________________________'.
+        '______________________________________________________________________________'
+            . '________________________________________________________________________'
+            .'__________________________________________________________________________.',[], [ 'align' => \PhpOffice\PhpWord\SimpleType\Jc::BOTH ]);
+
+        $section->addText('      Я разрешаю испоьзование тех лекарственных средств, какие, по мнению врачей, будут необходимы для'.
+            ' проведения указанных процедур.',[], [ 'align' => \PhpOffice\PhpWord\SimpleType\Jc::BOTH ]);
+
+        $section->addText('      Я понимаю, что различия между организмами животных даже одной породы делает невозможным гарантирование'.
+            ' того, что вышеуказанная процедура будет иметь желаемый результат и что, хотя и очень редко, .'.
+            'могут возникнуть неожиданные реакции (включая летальный исход).',[], [ 'align' => \PhpOffice\PhpWord\SimpleType\Jc::BOTH ]);
+        $section->addText('Подпись владельца или ответственного лица: _________________________',[], [ 'align' => \PhpOffice\PhpWord\SimpleType\Jc::BOTH ]);
+        $section->addText('Телефон, по которому мы можем связаться с Вами: '.$client->PHONES.' ______________________.',[], [ 'align' => \PhpOffice\PhpWord\SimpleType\Jc::BOTH ]);
+
+        $filename='/Соглашение'.'.docx';
+        $objWriter = \PhpOffice\PhpWord\IOFactory::createWriter($document, 'Word2007');
+        $objWriter->save(Yii::getAlias('@reports').$filename);
+
+        $path = \Yii::getAlias('@reports');
+
+        $file = $path.$filename;
+        if (file_exists($file)) {
+            \Yii::$app->response->sendFile($file);
+        }else {
+            throw new \Exception('Файл не найден');
+        }
+
+    }
+    public function actionDocdolg(){
+        Yii::setAlias('@reports', Yii::$app->basePath . '/отчеты');
+        $visit=Vizit::findOne(['ID_VISIT'=>$_GET['ID_VISIT']]);
+        $pacient=Pacient::findOne(['ID_PAC'=>$visit->ID_PAC]);
+        $client=Client::findOne(['ID_CL'=>$pacient->ID_CL]);
+
+        $fio=$client->FAM.' '.$client->NAME.' '.$client->OTCH;
+        $adres=$client->STREET.' '.$client->HOUSE.'-'.$client->FLAT;
+        $document=new PhpWord();
+        $document->setDefaultFontName('Times New Roman');
+        $document->setDefaultFontSize(14);
+        $fontStyle = array( 'size'=>12, 'spaceAfter'=>0, 'bold'=>true);
+        $document->addFontStyle('myTextStyle', $fontStyle); //myTextStyle - это имя стиля
+
+
+
+        $section = $document->addSection();
+
+
+
+        $document->addParagraphStyle('p2Style', array('align'=>'top', 'spaceAfter'=>0));
+        $section->addText('Договор возмездного оказания ветеринарных услуг №_____________', 'myTextStyle', [ 'align' => \PhpOffice\PhpWord\SimpleType\Jc::CENTER]);
+        $section->addText('Г. Чайковский           								'.date('d.m.Y'), 'myTextStyle', [ 'align' => \PhpOffice\PhpWord\SimpleType\Jc::BOTH ]);
+        $section->addText('ИП Зайцева Н.В. именуемое в дальнейшем "Исполнитель", с одной стороны, и '.$fio.', именуемый в'.
+            ' дальнейцем "Заказчик", с другой стороны, заключили настоящий договор о нижеследующем:', [], [ 'align' => \PhpOffice\PhpWord\SimpleType\Jc::BOTH ]);
+        $section->addText('1. Предмет договора',['bold'=>true],[ 'align' => \PhpOffice\PhpWord\SimpleType\Jc::BOTH ]);
+
+        $section->addText('1.1. Заказчик поручает, а Исполнитель принимает на себя обязательства по оказанию следующих ветеринарных услуг:',[],[ 'align' => \PhpOffice\PhpWord\SimpleType\Jc::BOTH ]);
+        $section->addText('______________________________________________________________'.
+            '__________________________________________________________________________________'.
+            '__________________________________________________________________________________'.
+            '___________________________________________________________________________________'.
+            '___________________________________________________________________________',[],[ 'align' => \PhpOffice\PhpWord\SimpleType\Jc::BOTH ]);
+
+        $section->addText('2. Цена договора',['bold'=>true],[ 'align' => \PhpOffice\PhpWord\SimpleType\Jc::BOTH ]);
+        $section->addText('Заказчик обязуется оплатить услуги, указанные п.1 настоящего Договора в размере',[],[ 'align' => \PhpOffice\PhpWord\SimpleType\Jc::BOTH ]);
+        $section->addText('________________________________________________________________',[],[ 'align' => \PhpOffice\PhpWord\SimpleType\Jc::BOTH ]);
+        $section->addText('и в срок до ________________________________',[],[ 'align' => \PhpOffice\PhpWord\SimpleType\Jc::BOTH ]);
+
+        $section->addText('Реквизиты сторон:',['bold'=>true],[ 'align' => \PhpOffice\PhpWord\SimpleType\Jc::BOTH ]);
+        $section->addText('Заказчик:            '.$fio,['bold'=>true],[ 'align' => \PhpOffice\PhpWord\SimpleType\Jc::BOTH ]);
+        $section->addText('Проживающий по адресу:            '.$adres,['bold'=>true],[ 'align' => \PhpOffice\PhpWord\SimpleType\Jc::BOTH ]);
+        $section->addText($client->PHONES,['bold'=>true],[ 'align' => \PhpOffice\PhpWord\SimpleType\Jc::BOTH ]);
+
+        $section->addText('Паспорт: ______________________________, '.'выдан "____" ________________ года, ___________________________________________ ',[],[ 'align' => \PhpOffice\PhpWord\SimpleType\Jc::BOTH ]);
+        $section->addText('_______________________________                   		_____________',[],[ 'align' => \PhpOffice\PhpWord\SimpleType\Jc::BOTH ]);
+
+        $section->addText('Исполнитель:',['bold'=>true],[ 'align' => \PhpOffice\PhpWord\SimpleType\Jc::BOTH ]);
+        $section->addText('ИП Зайцева Н.В.',[],[ 'align' => \PhpOffice\PhpWord\SimpleType\Jc::BOTH ]);
+        $section->addText('Адрес: Пермский край, г. Чайковский, ул. Кабалевского, 24 ',[],[ 'align' => \PhpOffice\PhpWord\SimpleType\Jc::BOTH ]);
+        $section->addText('ИНН:_____________________                   				_____________',[],[ 'align' => \PhpOffice\PhpWord\SimpleType\Jc::BOTH ]);
+
+
+        $filename='/Договор возмездного оказания'.'.docx';
+        $objWriter = \PhpOffice\PhpWord\IOFactory::createWriter($document, 'Word2007');
+        $objWriter->save(Yii::getAlias('@reports').$filename);
+
+        $path = \Yii::getAlias('@reports');
+
+        $file = $path.$filename;
+        if (file_exists($file)) {
+            \Yii::$app->response->sendFile($file);
+        }else {
+            throw new \Exception('Файл не найден');
+        }
+    }
 
 }
 

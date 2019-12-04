@@ -27,7 +27,7 @@ use yii\widgets\MaskedInput;
     <?= $form->field($model, 'PHONES')->textInput(['style'=>'width: 210px;margin-left:5px', 'autocomplete'=>'0'])?>
 </div>
 <?= $form->field($model, 'EMAIL')->textInput(['autocomplete'=>'0'])?>
-<?= Html::submitButton('Отправить',['class'=>'btn btn-success'])?>
+<?= Html::submitButton('Сохранить',['class'=>'btn btn-success'])?>
 <?php $form = ActiveForm::end();
 ?>
 
@@ -109,13 +109,13 @@ use yii\widgets\MaskedInput;
 
                     <div class="row">
                             <div class="col-md-3">
-                            <?= Html::submitButton('Отправить',['class'=>'btn btn-success'])?>
+                            <?= Html::submitButton('Сохранить',['class'=>'btn btn-success'])?>
                             </div>
                             <div class="col-md-6">
                             <a href="index.php?r=client/visits&pacientId=<?=$model->ID_PAC?>&clientId=<?=$model->ID_CL?>" class="btn btn-primary" style="width:100%;">Визиты пациента</a>
                             </div>
                             <div class="col-md-3" style="text-align: right;">
-                            <a class="btn btn-danger" href="index.php?r=client/pacientdelete&clientId=<?=$model->ID_CL?>&deletePacient=<?=$model->ID_PAC?>" >Удалить</a>
+                            <a class="btn btn-danger" href="index.php?r=client/pacientdelete&clientId=<?=$model->ID_CL?>&deletePacient=<?=$model->ID_PAC?>"  onclick='return confirm("Вы уверены?")'>Удалить</a>
                             </div>
 
                     </div>
@@ -177,7 +177,7 @@ if ($_GET['clientId']!='new'){?>
                 'prompt' => 'Не выбрано...'
             ])->label('Лечащий врач');?>
             <?= $form->field($newPacient, 'PRIMECH')->textarea(['rows'=>3])?>
-            <?= Html::submitButton('Отправить',['class'=>'btn btn-success'])?>
+            <?= Html::submitButton('Сохранить',['class'=>'btn btn-success'])?>
             <?php $form = ActiveForm::end();?>
 
 

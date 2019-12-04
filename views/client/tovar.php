@@ -12,7 +12,7 @@ use yii\helpers\Html;use yii\widgets\ActiveForm; ?>
     <?= $form->field($model, 'KOL')->textInput(['autocomplete'=>'off'])->label('Количество')?>
 
     <div class="row">
-        <div class="col-md-2"><?= Html::submitButton('Отправить',['class'=>'btn btn-success'])?></div>
+        <div class="col-md-2"><?= Html::submitButton('Сохранить',['class'=>'btn btn-success'])?></div>
 
 
     </div>

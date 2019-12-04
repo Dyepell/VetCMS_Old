@@ -19,7 +19,7 @@ use yii\widgets\ActiveForm; ?>
         <?= $form->field($blood, 'OP')->textarea(['rows'=>10])?>
         <div class="row">
 
-            <div class="col-md-2"><?= Html::submitButton('Отправить',['class'=>'btn btn-success'])?></div>
+            <div class="col-md-2"><?= Html::submitButton('Сохранить',['class'=>'btn btn-success'])?></div>
 
             <?php if ($_GET['ID_UZI']!=NULL):?>
                 <div class="col-md-10" style="text-align: right">

@@ -37,7 +37,7 @@ use app\models\Kattov;
 
 
     <div class="row">
-        <div class="col-md-2"><?= Html::submitButton('Отправить',['class'=>'btn btn-success'])?></div>
+        <div class="col-md-2"><?= Html::submitButton('Сохранить',['class'=>'btn btn-success'])?></div>
 
 
     </div>

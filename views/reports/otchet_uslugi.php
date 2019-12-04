@@ -32,7 +32,6 @@ $items=[
                 <?= Html::label('Дата начала', 'FIRST_DATE_S', ['class' => 'control-label','style'=>'margin-right:100px']) ?>
                 <?= Html::label('Дата окончания', 'SECOND_DATE_S', ['class' => 'control-label']) ?>
                 <?= Html::label('Вид отчета', 'vid', ['class' => 'control-label', 'style'=>'margin-left:90px;']) ?>
-                <?= Html::label('Фамилия клиента', 'fam', ['class' => 'control-label', 'style'=>'margin-left:120px;']) ?>
 
                 <div style="display: flex;">
                 <?= Html::textInput('FIRST_DATE_S','',['class' => 'form-control','style'=>'width:200px' ]); ?>

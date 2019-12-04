@@ -19,11 +19,11 @@ use yii\widgets\ActiveForm; ?>
         <?= $form->field($blood, 'OP')->textarea(['rows'=>10])?>
         <div class="row">
 
-            <div class="col-md-2"><?= Html::submitButton('Отправить',['class'=>'btn btn-success'])?></div>
+            <div class="col-md-2"><?= Html::submitButton('Сохранить',['class'=>'btn btn-success'])?></div>
 
             <?php if ($_GET['ID_OTHER']!=NULL):?>
                 <div class="col-md-10" style="text-align: right">
-                    <a href="index.php?r=client/otherdelete&ID_OTHER=<?=$blood->ID_OTHER?>" class="btn btn-danger" >Удалить</a>
+                    <a href="index.php?r=client/otherdelete&ID_OTHER=<?=$blood->ID_OTHER?>" class="btn btn-danger"  onclick='return confirm("Вы уверены?")'>Удалить</a>
                 </div>
             <?php endif;?>
         </div>

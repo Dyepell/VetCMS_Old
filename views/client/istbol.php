@@ -13,11 +13,11 @@ use yii\helpers\Html;use yii\widgets\ActiveForm; ?>
 
 
     <div class="row">
-        <div class="col-md-2"><?= Html::submitButton('Отправить',['class'=>'btn btn-success'])?></div>
+        <div class="col-md-2"><?= Html::submitButton('Сохранить',['class'=>'btn btn-success'])?></div>
 
         <?php if ($_GET['ID_IST']!=NULL):?>
             <div class="col-md-10" style="text-align: right">
-                <a href="index.php?r=client/istboldelete&ID_IST=<?=$istbol->ID_IST?>" class="btn btn-danger" >Удалить</a>
+                <a href="index.php?r=client/istboldelete&ID_IST=<?=$istbol->ID_IST?>" class="btn btn-danger"  onclick='return confirm("Вы уверены?")'>Удалить</a>
             </div>
         <?php endif;?>
     </div>

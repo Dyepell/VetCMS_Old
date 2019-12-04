@@ -150,11 +150,11 @@ use yii\widgets\ActiveForm; ?>
 
         <div class="row">
 
-            <div class="col-md-2"><?= Html::submitButton('Отправить',['class'=>'btn btn-success'])?></div>
+            <div class="col-md-2"><?= Html::submitButton('Сохранить',['class'=>'btn btn-success'])?></div>
 
             <?php if ($_GET['ID_BIOHIM']!=NULL):?>
                 <div class="col-md-10" style="text-align: right">
-                    <a href="index.php?r=client/biohimdelete&ID_BIOHIM=<?=$blood->ID_BIOHIM?>" class="btn btn-danger" >Удалить</a>
+                    <a href="index.php?r=client/biohimdelete&ID_BIOHIM=<?=$blood->ID_BIOHIM?>" class="btn btn-danger"  onclick='return confirm("Вы уверены?")'>Удалить</a>
                 </div>
             <?php endif;?>
         </div>

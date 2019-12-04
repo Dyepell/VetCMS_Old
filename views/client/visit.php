@@ -5,79 +5,7 @@ use yii\grid\GridView;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm; ?>
 
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <h4 class="modal-title" id="myModalLabel">Предыдущие услуги</h4>
-            </div>
-            <div class="modal-body">
-                <?php
 
-
-
-                if ($_GET['ID_VISIT']!=null){ echo GridView::widget([
-                    'dataProvider'=>$prFacProvider,
-
-                    'columns'=>
-
-                        [
-                            ['label' => 'ID',
-                                'attribute' => 'ID_FAC',
-
-                            ],
-                            ['label' => 'ID пациента',
-                                'attribute' => 'ID_PAC',
-
-                            ],
-                            ['label' => 'Специалист',
-                                'attribute' => 'ID_DOC',
-                                'value'=>function($key){
-                                    $doc=\app\models\Doctor::findOne(['ID_DOC'=>$key->ID_DOC]);
-                                    $doc=$doc->NAME;
-                                    return $doc;
-                                }
-
-                            ],
-                            ['label' => 'Услуга',
-                                'attribute' => 'ID_PR',
-                                'value'=>function($key){
-                                    $pr=\app\models\Price::findOne(['ID_PR'=>$key->ID_PR]);
-                                    $pr=$pr->NAME;
-                                    return $pr;
-                                }
-                            ],
-                            ['label' => 'Дата',
-                                'attribute' => 'DATA',
-
-                            ],
-                            ['label' => 'Цена',
-                                'attribute' => 'PRICE',
-
-                            ],
-                            ['label' => 'Количество',
-                                'attribute' => 'KOL',
-
-                            ],
-                            ['label' => 'Сумма',
-                                'attribute' => 'SUMMA',
-
-                            ],
-
-
-
-                        ],]);}?>
-            </div>
-            <div class="modal-footer">
-                <!--                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>-->
-
-            </div>
-        </div>
-    </div>
-</div>
 
 
 <div class="modal fade" id="istbol" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -133,6 +61,27 @@ use yii\widgets\ActiveForm; ?>
         </div>
     </div>
 </div>
+<div class="modal fade" id="docs" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">Приложения</h4>
+            </div>
+            <div class="modal-body" style="text-align: center">
+
+                <a href="index.php?r=client/docagree&ID_VISIT=<?=$visit->ID_VISIT?>" class="btn btn-success" style="margin-bottom: 10px;">Соглашение</a>
+                <a href="index.php?r=client/docdolg&ID_VISIT=<?=$visit->ID_VISIT?>" class="btn btn-success">Договор возмездного оказания</a>
+            </div>
+            <div class="modal-footer">
+                <!--                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>-->
+
+            </div>
+        </div>
+    </div>
+</div>
 
 
 <div class="row container-fluid " style="margin-top: 70px;">
@@ -178,20 +127,13 @@ use yii\widgets\ActiveForm; ?>
 
                                     $myurl='index.php?r=client/facilitydelete&ID_FAC='.$key['ID_FAC'].'&ID_VISIT='.$key['ID_VISIT'];
 
-                                    return Html::a('<span class="glyphicon glyphicon-trash" style="margin-left: 5px;"></span>', $myurl,[
+                                    return Html::a('<span class="glyphicon glyphicon-trash" style="margin-left: 5px;"  onclick=\'return confirm("Вы уверены?")\'></span>', $myurl,[
                                         'title' => Yii::t('app', 'Удалить'),
                                     ]);
                                 },],
 
                         ],
-                        ['label' => 'ID',
-                            'attribute' => 'ID_FAC',
 
-                        ],
-                        ['label' => 'ID пациента',
-                            'attribute' => 'ID_PAC',
-
-                        ],
                         ['label' => 'Специалист',
                             'attribute' => 'ID_DOC',
                             'value'=>function($key){
@@ -233,7 +175,7 @@ use yii\widgets\ActiveForm; ?>
             if ($_GET['ID_VISIT']!=NULL):
             ?>
             <div class="row">
-                <div class="col-md-5">
+                <div class="col">
                 <span style="font-size: 200%; color: darkred;">Итого: <?=$visit->SUMMAV?> руб.</span>
                 </div>
                 <div class="col-md-5">
@@ -249,9 +191,9 @@ use yii\widgets\ActiveForm; ?>
         <div class="row" style="margin-left:10px;">
 
             <div class="col">
-        <a href="index.php?r=client/facility&ID_VISIT=<?=$visit->ID_VISIT?>" class="btn btn-warning">Добавить услугу</a>
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
-            Оказанные услуги
+        <a href="index.php?r=client/facility&ID_VISIT=<?=$visit->ID_VISIT?>" class="btn btn-warning">Добавить услуги</a>
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#docs">
+            Приложения
         </button>
 
 
@@ -274,8 +216,8 @@ use yii\widgets\ActiveForm; ?>
 
         <div style="display: flex">
 
-        <?= $form->field($visit, 'DATA_OPL')->textInput(['readonly'=>'readonly','autocomplete'=>'0'])->label('Дата оплаты')?>
-        <?= $form->field($visit, 'SUMMAO')->textInput(['style'=>'margin-left:10px;'])->label('Оплата', ['style'=>'margin-left:10px;'])?>
+        <?= $form->field($visit, 'DATE_OPL')->textInput(['readonly'=>'readonly','autocomplete'=>'0'])->label('Дата оплаты')?>
+        <?= $form->field($visit, 'SUMMAO')->textInput(['style'=>'margin-left:10px;width:70px;'])->label('Оплата', ['style'=>'margin-left:10px; '])?>
         <?=$form->field($visit, 'VIDOPL')->dropDownList([
             '0' => 'Наличные',
             '1' => 'Б/нал',
@@ -286,11 +228,12 @@ use yii\widgets\ActiveForm; ?>
         <div class="row">
             <div class="col-md-2">
 
-        <?= Html::submitButton('Отправить',['class'=>'btn btn-success'])?>
+        <?= Html::submitButton('Сохранить',['class'=>'btn btn-success'])?>
             </div>
         <?php if ($_GET['ID_VISIT']!=NULL):?>
                     <div class="col-md-10" style="text-align: right">
-                     <a href="index.php?r=client/visitdelete&ID_VISIT=<?=$visit->ID_VISIT?>" class="btn btn-danger" >Удалить</a>
+                     <a href="index.php?r=client/visitdelete&ID_VISIT=<?=$visit->ID_VISIT?>" class="btn btn-danger"
+                        onclick='return confirm("Вы уверены?")' >Удалить</a>
                     </div>
         <?php endif;?>
         </div>
@@ -308,6 +251,7 @@ $('.grid-view tbody tr').on('click', function()
     console.log($(this).data());
     // window.location = "index.php?r=client/istbol&ID_IST="+$(this).data('ID_IST');
    });
+
 JS;
 
 $this->registerJs($js);?>
