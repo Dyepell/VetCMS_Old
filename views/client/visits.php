@@ -7,30 +7,19 @@ use yii\grid\GridView;
 ?>
 <div class="row container-fluid " style="margin-top: 70px;">
 
-    <span style="color: cornflowerblue;font-size: 200%;"><a href="index.php?r=client/anketa&clientId=<?=$pacient->ID_CL?>"><?=$pacient->KLICHKA?> </a></span>
-    <span style="font-size: 130%;">(<?=$client->FAM.' '.$client->NAME.' '.$client->OTCH?>)</span>
+    <span style="font-size: 200%;"><?=$pacient->KLICHKA?> </span>
+    <span style="font-size: 130%;"><a href="index.php?r=client/anketa&clientId=<?=$pacient->ID_CL?>">(<?=$client->FAM.' '.$client->NAME.' '.$client->OTCH?>)</a></span>
+    <a href="index.php?r=client/visit&ID_PAC=<?=$pacient->ID_PAC?>" class="btn btn-success">Новый визит</a>
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#istbol">Истории болезни</button>
+    <a href="index.php?r=client/analysis&ID_PAC=<?=$_GET['pacientId']?>" class="btn btn-primary">Исследования</a>
 
     <?php echo GridView::widget([
             'dataProvider'=>$dataProvider,
             'id'=>'1',
             'columns'=>[
-                ['class' => 'yii\grid\ActionColumn',
-                    'template'=>'{view} ',
-                    'buttons'=>['view'=>function($model, $key, $index){
-                        $myurl='index.php?r=client/visit&ID_PAC='.$key['ID_PAC'].'&ID_VISIT='.$key['ID_VISIT'];
-                        return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', $myurl,[
-                            'title' => Yii::t('app', 'Просмотр'),
-                        ]);
-                    },
 
-                    ],
-
-                ],
                 ['class' => 'yii\grid\SerialColumn'],
-                ['label' => 'ID визита',
-                    'attribute' => 'ID_VISIT',
 
-                ],
                 ['label' => 'Дата визита',
                     'attribute' => 'DATE',
                     'value'=>function($key){
@@ -43,10 +32,7 @@ use yii\grid\GridView;
                     }
 
                 ],
-                ['label' => 'ID пациента',
-                    'attribute' => 'ID_PAC',
 
-                ],
                 ['label' => 'Сумма визита',
                     'attribute' => 'SUMMAV',
 
@@ -55,18 +41,20 @@ use yii\grid\GridView;
                     'attribute' => 'DOLG',
 
                 ],
-                ['label' => 'Дата погашения',
+                ['label' => 'Дата оплаты',
                     'attribute' => 'DATA_OPL',
+                    'value'=>function($key){
+                    if($key->DATA_OPL!=NULL){
+                        return $key->DATA_OPL;
+                    }else{
+                        return $key->DATE_OPL;
+                    }
+
+                    }
 
                 ],
-                ['label' => 'Остаток долга',
-                    'attribute' => 'PROZSKID',
 
-                ],
-                ['label' => 'Анаинез и лечение',
-                    'attribute' => 'PRIMECH',
 
-                ],
                 ['label' => 'Диагноз',
                     'attribute' => 'ID_DIAG',
                     'value'=>function($key){
@@ -81,17 +69,14 @@ use yii\grid\GridView;
 </div>
 <div class="row container-fluid p-0">
 <div class="col-md-6">
-    <span style="font-size: 200%;">Предстоящие услуги</span>
+    <span style="font-size: 200%;">Вакцинация</span>
 
     <?php echo GridView::widget([
         'dataProvider'=>$vakcineProvider,
         'formatter' => ['class' => 'yii\i18n\Formatter','nullDisplay' => ''],
         'columns'=>[
             ['class' => 'yii\grid\SerialColumn'],
-            ['label' => 'ID пациента',
-                'attribute' => 'ID_PAC'
 
-            ],
             ['label' => 'Дата оказания',
                 'attribute' => 'DATA',
                 'value'=>function($key){
@@ -120,10 +105,57 @@ use yii\grid\GridView;
         ],
         ]);?>
 </div>
-    <div class="col-md-5" style="margin-top:20px;">
-        <a href="index.php?r=client/visit&ID_PAC=<?=$pacient->ID_PAC?>" class="btn btn-success">Новый визит</a>
+
+</div>
+
+<div class="modal fade" id="istbol" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">Истории болезни</h4>
+            </div>
+            <div class="modal-body">
+                <?php
+                echo GridView::widget([
+                    'dataProvider'=>$istbolProvider,
+                    'id'=>'istbol',
+
+                    'columns'=>
+
+                        [
+
+
+                            ['label' => 'Дата',
+                                'attribute' => 'DIST',
+
+                            ],
+
+
+
+
+                        ],
+
+                    'rowOptions' => function ($model, $key, $index, $grid) {
+
+                        return ['id' => $model['ID_IST'], 'onclick' => 'window.location = "index.php?r=client/istbol&ID_IST="+this.id'];
+
+                    },
+
+
+                ]);?>
+                <a href="index.php?r=client/istbol&ID_PAC=<?=$visit->ID_PAC?>" class="btn btn-success" style="width: 100%;">Добавить историю</a>
+            </div>
+            <div class="modal-footer">
+                <!--                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>-->
+
+            </div>
+        </div>
     </div>
 </div>
+
 
 <?php
 $js = <<<JS

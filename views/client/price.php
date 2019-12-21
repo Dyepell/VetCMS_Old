@@ -44,10 +44,7 @@ use yii\grid\GridView;
 
                     [
 
-                    ['label' => 'ID услуги',
-                        'attribute' => 'ID_PR',
 
-                    ],
                     ['label' => 'Дата ',
                         'attribute' => 'DATA'
 
@@ -85,10 +82,7 @@ use yii\grid\GridView;
 
                 'columns'=>[
 
-                    ['label' => 'ID услуги',
-                        'attribute' => 'ID_PR',
 
-                    ],
                     ['label' => 'Дата ',
                         'attribute' => 'DATA'
 
@@ -126,10 +120,7 @@ use yii\grid\GridView;
 
                 'columns'=>[
 
-                    ['label' => 'ID услуги',
-                        'attribute' => 'ID_PR',
 
-                    ],
                     ['label' => 'Дата ',
                         'attribute' => 'DATA'
 
@@ -166,10 +157,7 @@ use yii\grid\GridView;
 
                 'columns'=>[
 
-                    ['label' => 'ID услуги',
-                        'attribute' => 'ID_PR',
 
-                    ],
                     ['label' => 'Дата ',
                         'attribute' => 'DATA'
 
@@ -207,10 +195,7 @@ use yii\grid\GridView;
 
                 'columns'=>[
 
-                    ['label' => 'ID услуги',
-                        'attribute' => 'ID_PR',
 
-                    ],
                     ['label' => 'Дата ',
                         'attribute' => 'DATA'
 
@@ -246,10 +231,7 @@ use yii\grid\GridView;
 
                 'columns'=>[
 
-                    ['label' => 'ID услуги',
-                        'attribute' => 'ID_PR',
 
-                    ],
                     ['label' => 'Дата ',
                         'attribute' => 'DATA'
 
@@ -287,10 +269,7 @@ use yii\grid\GridView;
 
                 'columns'=>[
 
-                    ['label' => 'ID услуги',
-                        'attribute' => 'ID_PR',
 
-                    ],
                     ['label' => 'Дата ',
                         'attribute' => 'DATA'
 
@@ -326,10 +305,7 @@ use yii\grid\GridView;
 
                 'columns'=>[
 
-                    ['label' => 'ID услуги',
-                        'attribute' => 'ID_PR',
 
-                    ],
                     ['label' => 'Дата ',
                         'attribute' => 'DATA'
 

@@ -16,15 +16,13 @@ use yii\widgets\ActiveForm; ?>
         <div style="display: flex">
         <?= $form->field($model, 'ID_TOV')->textInput(['readonly'=>'readonly', 'style'=>'width:70px; margin-right:10px;'])->label('ID')?>
         <?= $form->field($model, 'NAME')->textInput(['style'=>'width:300px;'])->label('Наименование товара')?>
-        <?= $form->field($model, 'PRICE')->textInput(['style'=>'margin-left:10px;width:70px;'])->label('Цена')?>
-        <?= $form->field($model, 'KOL')->textInput(['style'=>'margin-left:10px;width:70px;'])->label('Изначальное количество')?>
 
 
         </div>
 
         <div class="row">
             <div class="col-md-2"><?= Html::submitButton('Добавить товар',['class'=>'btn btn-success'])?></div>
-            <a href="index.php?r=client/report_ostatki_form" class="btn btn-primary">Сформировать отчет по остаткам</a>
+
 
         </div>
 
@@ -54,22 +52,12 @@ use yii\widgets\ActiveForm; ?>
 
 
 
-                            ['label' => 'ID товара',
-                                'attribute' => 'ID_TOV',
 
-                            ],
                             ['label' => 'Наименование товара ',
                                 'attribute' => 'NAME'
 
                             ],
-                        ['label' => 'Цена продажи ',
-                            'attribute' => 'PRICE'
 
-                        ],
-                        ['label' => 'Количество',
-                            'attribute' => 'KOL'
-
-                        ],
 
 
                         ],]);?>

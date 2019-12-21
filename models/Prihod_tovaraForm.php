@@ -18,9 +18,10 @@ class Prihod_tovaraForm extends ActiveRecord
             'ID_PRIHOD'=>'ID ',
             'ID_TOV'=>'Товар',
             'PRICE'=>'Цена',
-            'SUMM'=>'Вид',
-            'DATE'=>'Наименование',
+            'SUMM'=>'Суммы',
+            'DATE'=>'Дата',
             'KOL'=>'Количество',
+            'SELL_PRICE'=>'Цена продажи'
 
 
         ];
@@ -29,7 +30,7 @@ class Prihod_tovaraForm extends ActiveRecord
     {
         return [
             [["ID_PRIHOD"], 'safe'],
-            [["ID_TOV", "KOL", "SUMM", "DATE", 'PRICE'], 'safe'],
+            [["ID_TOV", "KOL", "SUMM", "DATE", 'PRICE', 'SELL_PRICE'], 'safe'],
 
 
         ];

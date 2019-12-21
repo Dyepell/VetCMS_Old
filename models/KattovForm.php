@@ -17,8 +17,7 @@ class KattovForm extends ActiveRecord
         return [
             'ID_TOV'=>'ID ',
             'NAME'=>'Наименование',
-            'KOL'=>'Количество',
-            'PRICE'=>'Цена',
+
 
 
 
@@ -28,7 +27,7 @@ class KattovForm extends ActiveRecord
     {
         return [
 
-            [["ID_TOV", "NAME", "KOL", "PRICE"], 'safe'],
+            [["ID_TOV", "NAME"], 'safe'],
 
 
         ];

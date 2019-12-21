@@ -4,7 +4,7 @@ use yii\helpers\ArrayHelper;
 use yii\helpers\Html;use yii\widgets\ActiveForm; ?>
 
 <div class="container-fluid row" style="margin-top: 70px;margin-bottom: 50px;">
-    <span style="font-size: 150%">История болезни: <a href="index.php?r=client/anketa&clientId=<?=$pacient->ID_CL?>" class="clientLink"><?=$pacient->KLICHKA?></a></span>
+    <span style="font-size: 150%">История болезни: <a href="index.php?r=client/visits&pacientId=<?=$pacient->ID_CL?>" class="clientLink"><?=$pacient->KLICHKA?></a></span>
     <?php $form = ActiveForm::begin(['options'=>['id'=>'priceForm']]) ?>
     <?= $form->field($istbol, 'ID_IST')->textInput(['readonly'=>'readonly'])->label('ID истории')?>
     <?= $form->field($istbol, 'ID_PAC')->textInput(['readonly'=>'readonly', 'value'=>$pacient->ID_PAC])->label('ID пациента')?>

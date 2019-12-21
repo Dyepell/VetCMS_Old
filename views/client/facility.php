@@ -3,7 +3,15 @@
 use yii\grid\GridView;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
-use yii\widgets\ActiveForm; ?>
+use yii\widgets\ActiveForm;
+
+if($searchModel->ID_SPDOC==5){
+    $color='red';
+}
+?>
+
+
+
 
 <div class="row container-fluid " style="margin-top: 70px;">
 
@@ -38,7 +46,7 @@ use yii\widgets\ActiveForm; ?>
     <?= Html::beginForm(['client/new_facility', 'id' => 'otchet', 'name'=>'form1'], 'GET'); ?>
     <div class="row">
         <div class="col-md-2"><a href="index.php?r=client/visit&ID_VISIT=<?=$_GET['ID_VISIT']?>" class="btn btn-primary">Перейти к визиту</a></div>
-        <div class="col-md-3"><?= Html::textInput('ID_VISIT',$_GET['ID_VISIT'],['class' => 'form-control','style'=>'width:200px' ]); ?> </div>
+        <div class="col-md-3"><?= Html::textInput('DATASL',date("d.m.Y", strtotime("+1 year")),['class' => 'form-control ','style'=>'width:200px;border-color:'.$color.';border-width:4px;' ]); ?> </div>
         <div class="col-md-4"> <?=Html::dropDownList('doctor', 'null', $doc, ['class'=>'form-control']);?></div>
         <div class="col-md-2"> <?= Html::submitButton('Сохранить', ['class' => 'btn btn-success', 'id'=>'btn1', 'style'=>'width:100%;']) ?></div>
     </div>
@@ -106,8 +114,24 @@ use yii\widgets\ActiveForm; ?>
                 ])
 
     ?>
+    <?= Html::textInput('ID_VISIT',$_GET['ID_VISIT'],['class' => 'form-control ','style'=>'width:200px;border-color:'.$color.';' ]); ?>
 
     <?php Html::endForm(); ?>
+    <div id="msg_pop">
+        <a href=""class="msg_close" style="color:#fc4e4e; margin: 0px" onclick="document.getElementById('msg_pop').style.display='none'; return false;">X</a>
+        <h4 style="margin-bottom: 5px;">Список услуг визита</h4>
+        <?php
 
+            foreach ($uslugi as $item):
+                $pr=\app\models\Price::findOne(['ID_PR'=>$item->ID_PR]);
+        ?>
+            <div class="row" style="margin-left:5px; margin-bottom: 5px;"><?=$pr->NAME?>        (<?=$item->KOL?>)</div>
 
+        <?php endforeach;?>
+    </div>
+    <script type="text/javascript">
+        var delay_popup = 200;
+        var msg_pop = document.getElementById('msg_pop');
+        setTimeout("document.getElementById('msg_pop').style.display='block';document.getElementById('msg_pop').className += 'fadeIn';", delay_popup);
+    </script>
 </div>

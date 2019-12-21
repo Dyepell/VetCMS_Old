@@ -49,9 +49,20 @@ AppAsset::register($this);
                     ['label' => 'Специалисты', 'url' => ['/client/doctor']],
                 ],
 
-//            ['label' => 'Contact', 'url' => ['/site/contact']],
+
 
         ],
+            [
+                'label' => 'Склад',
+                'items' => [
+                    ['label' => 'Справочник расходников', 'url' => ['/client/expense_catalog']],
+
+                    ['label' => 'Приход', 'url' => ['/client/expense_prihod']],
+                ],
+
+
+
+            ],
             [
                 'label' => 'Отчеты',
                 'items' => [

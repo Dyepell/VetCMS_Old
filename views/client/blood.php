@@ -15,6 +15,7 @@ use yii\widgets\ActiveForm; ?>
         <div style="display: flex;">
         <?= $form->field($blood, 'ID_BLOOD')->textInput(['readonly'=>'readonly'])?>
         <?= $form->field($blood, 'DATE')->textInput()?>
+            <a href="index.php?r=client/printblood&ID_BLOOD=<?=$blood->ID_BLOOD?>" class="btn btn-success" style="height: 35px;margin-top: 25px;margin-left: 30px;">На печать</a>
         </div>
         <table class="table table-bordered">
             <thead>

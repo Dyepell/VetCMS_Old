@@ -15,7 +15,9 @@ use yii\widgets\ActiveForm; ?>
         <div style="display: flex;">
             <?= $form->field($blood, 'ID_BIOHIM')->textInput(['readonly'=>'readonly'])?>
             <?= $form->field($blood, 'DATE')->textInput()?>
+            <a href="index.php?r=client/printbiohim&ID_BIOHIM=<?=$blood->ID_BIOHIM?>" class="btn btn-success" style="height: 35px;margin-top: 25px;margin-left: 30px;">На печать</a>
         </div>
+
         <table class="table table-bordered">
             <thead>
             <tr>
@@ -139,7 +141,13 @@ use yii\widgets\ActiveForm; ?>
                 <td>0,97-1,45</td>
                 <td><?= $form->field($blood, 'FOSFOR')->textInput(['autocomplete'=>'off'])->label(false)?></td>
             </tr>
-
+            <tr>
+                <th>17</th>
+                <td>Холестерин</td>
+                <td></td>
+                <td></td>
+                <td><?= $form->field($blood, 'HOL')->textInput(['autocomplete'=>'off'])->label(false)?></td>
+            </tr>
 
 
             </tbody>

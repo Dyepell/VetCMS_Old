@@ -77,6 +77,10 @@ use yii\widgets\ActiveForm; ?>
                                 'attribute' => 'PRICE'
 
                             ],
+                            ['label' => 'Цена продажи',
+                                'attribute' => 'SELL_PRICE'
+
+                            ],
                             ['label' => 'Сумма',
                                 'attribute' => 'SUMM'
 

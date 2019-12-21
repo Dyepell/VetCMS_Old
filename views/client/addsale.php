@@ -4,36 +4,55 @@ use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use app\models\Kattov;
+use yii\widgets\Pjax;
 
+$tovar=Kattov::find()->orderBy(['NAME' => SORT_ASC])->all();
+
+$dropdown=[];
+foreach ($tovar as $item){
+    $dropdown[$item->ID_TOV]=$item->NAME;
+
+
+}
 
 
 ?>
 
 <div class="container-fluid row" style="margin-top: 70px;margin-bottom: 50px;">
 
-    <?php $form = ActiveForm::begin(['options'=>['id'=>'priceForm']]) ?>
-    <?= $form->field($model, 'ID_SALE')->textInput(['readonly'=>'readonly'])->label('ID')?>
+
+
+
+    <?php $form = ActiveForm::begin(['options'=>['id'=>'priceForm','method'=>'GET','data-pjax' => true]]) ?>
+
+
+
+
+
+    <?= $form->field($model, 'ID_PRIHOD')->dropDownList(
+        $prihod, [
+                'id'=>'dropdown',
+        'prompt' => 'Не выбрано...'
+    ])->label('Товар');?>
+    <?= $form->field($model, 'KOL')->textInput()->label('Количество')?>
     <?= $form->field($model, 'SOTRUDNIK')->dropDownList(
         ArrayHelper::map(\app\models\Doctor::find()->all(), 'ID_DOC', 'NAME'), [
 
 
         'prompt' => 'Не выбрано...'
     ])->label('Сотрудник');?>
-    <?= $form->field($model, 'ID_TOV')->dropDownList(
-        ArrayHelper::map(Kattov::find()->all(), 'ID_TOV', 'NAME'), [
 
-
-        'prompt' => 'Не выбрано...'
-    ])->label('Товар');?>
-    <?= $form->field($model, 'KOL')->textInput()->label('Количество')?>
-    <?= $form->field($model, 'SKIDKA')->textInput()->label('Скидка, %')?>
     <?=$form->field($model, 'VID_OPL')->dropDownList([
         '0' => 'Наличные',
         '1' => 'Б/нал',
 
     ]);?>
     <?= $form->field($model, 'DATE')->textInput()->label('Дата')?>
-    <?= $form->field($model, 'SUMM')->textInput(['readonly'=>'readonly'])->label('Сумма')?>
+
+
+
+
+
 
 
     <div class="row">
@@ -43,5 +62,10 @@ use app\models\Kattov;
     </div>
 
     <?php $form = ActiveForm::end();?>
+
 </div>
+
+
+
+
 

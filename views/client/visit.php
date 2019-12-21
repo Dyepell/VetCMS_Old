@@ -83,9 +83,80 @@ use yii\widgets\ActiveForm; ?>
     </div>
 </div>
 
+<div class="modal fade" id="prFacility" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">Услуги предыдущего визита</h4>
+            </div>
+            <div class="modal-body" style="text-align: center">
+               <?php if ($_GET['ID_VISIT']!=null):?>
+                <?= Html::beginForm(['client/pr_facility', 'id' => 'prFacility', 'name'=>'form1'], 'GET'); ?>
+                <?=Html::dropDownList('doctor', 'null', $doc, ['class'=>'form-control']);?>
+                <?php
+                echo GridView::widget([
+                    'dataProvider'=>$prFacilityProvider,
+                    'id'=>'prFac',
+
+                    'columns'=>
+
+                        [
+                                [
+                                    'format'=>'raw',
+                                    'value'=>function($key){
+                                        return  Html::checkbox($key->ID_FAC,'',['class' => 'form-check-input' ]);
+                                    }
+
+                                ],
+
+                            ['label' => 'Услуга',
+                                'attribute' => 'ID_PR',
+                                'value'=>function($key){
+                                    $pr=\app\models\Price::findOne(['ID_PR'=>$key->ID_PR]);
+                                    return $pr->NAME;
+                                }
+
+                            ],
+                            ['label' => 'Кол.',
+                                'attribute' => 'KOL',
+
+                            ],
+
+                            ['label' => 'Дата',
+                                'attribute' => 'DATA',
+                                'value'=>function($key){
+                                return date('d.m.Y', strtotime($key->DATA));
+                                }
+
+                            ],
+
+
+
+
+                        ],
+
+
+
+
+                ]);endif;?>
+                <?= Html::textInput('ID_VISIT',$_GET['ID_VISIT'],['class' => 'form-control ','style'=>'width:200px;border-color:'.$color.';display:none;' ]); ?>
+                <?= Html::submitButton('Сохранить', ['class' => 'btn btn-success', 'id'=>'btn1', 'style'=>'width:100%;']) ?>
+                <?php Html::endForm(); ?>
+            </div>
+            <div class="modal-footer">
+                <!--                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>-->
+
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <div class="row container-fluid " style="margin-top: 70px;">
-    <h1>Визит <a href="index.php?r=client/anketa&clientId=<?=$pacient->ID_CL?>"><?=$pacient->KLICHKA?></a></h1>
+    <h1>Визит <a href="index.php?r=client/visits&pacientId=<?=$pacient->ID_PAC?>&clientId=<?=$pacient->ID_CL?>"><?=$pacient->KLICHKA?></a></h1>
     <div class="col-md-6 p-0">
     <?php $form = ActiveForm::begin(['options'=>['id'=>'visitForm']]) ?>
         <div style="display: flex">
@@ -196,6 +267,10 @@ use yii\widgets\ActiveForm; ?>
             Приложения
         </button>
 
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#prFacility">
+                    Услуги предыдущего визита
+                </button>
+
 
             </div>
         </div>
@@ -208,15 +283,74 @@ use yii\widgets\ActiveForm; ?>
 
     <div class="col-md-5" style="margin-left: 20px;">
         <?php if($_GET['ID_VISIT']!=NULL):?>
-        <?= $form->field($visit, 'PRIMECH')->textarea(['rows'=>5])->label('Анаинез и лечение')?>
         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#istbol">
-            История болезни
+            Истории болезни
         </button>
         <a href="index.php?r=client/analysis&ID_PAC=<?=$visit->ID_PAC?>" class="btn btn-primary">Исследования</a>
+        <div class="row"></div>
+            <?php
+            if ($_GET['ID_VISIT']!=null):
+                echo "<span style=\"font-size: 150%;\">Оплата</span>";
+            echo GridView::widget([
+                'dataProvider'=>$oplataProvider,
+                'id'=>'oplata',
+
+                'columns'=>
+
+                    [
+                        ['class' => 'yii\grid\ActionColumn',
+                            'template'=>' {delete}',
+                            'buttons'=>[
+                                'delete'=>function($model, $key, $index){
+
+                                    $myurl='index.php?r=client/oplatadelete&ID_OPL='.$key['ID_OPL'].'&ID_VISIT='.$key['ID_VIZIT'];
+
+                                    return Html::a('<span class="glyphicon glyphicon-trash" style="margin-left: 5px;"  onclick=\'return confirm("Вы уверены?")\'></span>', $myurl,[
+                                        'title' => Yii::t('app', 'Удалить'),
+                                    ]);
+                                },],
+
+                        ],
+                        ['label' => 'ID',
+                            'attribute' => 'ID_OPL',
+
+                        ],
+                        ['label' => 'Вид оплаты',
+                            'attribute' => 'VID_OPL',
+                            'value'=>function($key){
+                            if($key->VID_OPL==0){
+                                return 'Наличные';
+                            }else{
+                                return 'Б/нал.';
+                            }
+                            }
+
+                        ],
+                        ['label' => 'Сумма',
+                            'attribute' => 'SUMM',
+
+                        ],
+                        ['label' => 'Дата',
+                            'attribute' => 'DATE',
+                            'value'=>function($key){
+                            return date('d.m.Y',strtotime($key->DATE));
+                            }
+
+                        ],
+
+
+
+
+                    ],
+
+
+
+
+            ]);endif;?>
 
         <div style="display: flex">
 
-        <?= $form->field($visit, 'DATE_OPL')->textInput(['readonly'=>'readonly','autocomplete'=>'0'])->label('Дата оплаты')?>
+
         <?= $form->field($visit, 'SUMMAO')->textInput(['style'=>'margin-left:10px;width:70px;'])->label('Оплата', ['style'=>'margin-left:10px; '])?>
         <?=$form->field($visit, 'VIDOPL')->dropDownList([
             '0' => 'Наличные',
@@ -243,6 +377,8 @@ use yii\widgets\ActiveForm; ?>
 
 
 </div>
+
+
 <?php
 $js = <<<JS
 

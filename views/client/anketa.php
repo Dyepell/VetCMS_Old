@@ -105,6 +105,21 @@ use yii\widgets\MaskedInput;
     'prompt' => 'Не выбрано...'
 
 ])->label('Лечащий врач', ['style'=>'margin-top:-35px;']);?>
+
+                    <div class="row">
+                        <div class="col-md-3">
+                            <a href="index.php?r=client/analysis&ID_PAC=<?=$model->ID_PAC?>" class="btn btn-primary">Исследования</a>
+                        </div>
+                        <div class="col-md-6">
+                        </div>
+                        <div class="col-md-3" style="text-align: right;">
+                            <a href="index.php?r=client/docuslugi&ID_PAC=<?=$model->ID_PAC?>" style="margin-left: -110px;" class="btn btn-primary">Договор об оказании вет. услуг</a>
+                        </div>
+
+                    </div>
+
+
+
 <?= $form->field($model, '[$i]PRIMECH')->textarea(['rows'=>3])?>
 
                     <div class="row">
@@ -185,3 +200,4 @@ if ($_GET['clientId']!='new'){?>
 
     </div>
     <?php }?>
+

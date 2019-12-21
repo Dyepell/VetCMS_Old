@@ -10,6 +10,7 @@ use app\models\Oplata;
 use app\models\OplataForm;
 use app\models\Pacient;
 use app\models\Price;
+use app\models\Prihod_tovara;
 use app\models\Sale;
 use app\models\Vid;
 use app\models\Vizit;
@@ -167,12 +168,11 @@ class ReportsController extends AppController
                 $sheet->setCellValue($cellLatter, $string);
             }
             $activeRow=4;
-            $clientSumm=0;
+            
             foreach ($facility as $fac){
                 $activeRow=$activeRow+1;
                 $client=Client::findOne(['ID_CL'=>$fac->ID_CL]);
-                $n = StringHelper::truncate($client->NAME, 1, '');
-                $o = StringHelper::truncate($client->OTCH, 1, '');
+
                  if($lastClient->ID_CL!=$client->ID_CL&&$lastClient!=NULL){
                      $n = StringHelper::truncate($lastClient->NAME, 1, '');
                      $o = StringHelper::truncate($lastClient->OTCH, 1, '');
@@ -186,7 +186,8 @@ class ReportsController extends AppController
 
 
                      $stringA='Итого: '.$lastClient->FAM . ' ' . $n .'.'. $o;
-                     $stringI=$clientSumm;
+
+                     $clientSumm=0;
 
                      $dolg=Vizit::find()->where(['>', 'DOLG', 0])->andWhere(['ID_CL'=>$lastClient->ID_CL])->all();
                      $nal=Oplata::find()->where(['between', 'DATE', date('Y-m-d',strtotime($firstdate)),date('Y-m-d',strtotime($secondtdate))])->where(['ID_CL'=>$lastClient->ID_CL])->andWhere(['VID_OPL'=>0])->all();
@@ -205,6 +206,7 @@ class ReportsController extends AppController
                      foreach ($bnal as $bnalich){
                          $summBnal=$summBnal+$bnalich->SUMM;
                      }
+                     $stringI=$summBnal+$summNal;
 
 
 
@@ -228,6 +230,8 @@ class ReportsController extends AppController
 
                      $activeRow=$activeRow+1;
                  }
+                $n = StringHelper::truncate($client->NAME, 1, '');
+                $o = StringHelper::truncate($client->OTCH, 1, '');
 
                      $cellA = 'A' . $activeRow;
                      $cellB = 'B' . $activeRow;
@@ -305,7 +309,7 @@ class ReportsController extends AppController
             $stringA=$lastClient->FAM.' '.$n. '.' .$o;
             $stringJ=$summDolg;
             $stringG=$summNal;
-            $stringI=$clientSumm;
+            $stringI=$summBnal+$summNal;
             $stringH=$summBnal;
 
             $sheet->setCellValue($cellA,$stringA);
@@ -787,10 +791,11 @@ class ReportsController extends AppController
                 $cellE='E'.$activeRow;
                 $cellF='F'.$activeRow;
                 $cellG='G'.$activeRow;
-                $tovar=Kattov::findOne(['ID_TOV'=>$specSales[$j]->ID_TOV]);
+                $tovar=Prihod_tovara::find()->where(['ID_PRIHOD'=>$specSales[$j]->ID_PRIHOD])->joinWith('tovar')->all();
+//                $tovar=Kattov::findOne(['ID_TOV'=>$specSales[$j]->ID_TOV]);
                 $sheet->setCellValue($cellA,$saleNum);
-                $sheet->setCellValue($cellB,$tovar->NAME);
-                $sheet->setCellValue($cellC,$tovar->PRICE);
+                $sheet->setCellValue($cellB,$tovar[0]->tovar->NAME);
+                $sheet->setCellValue($cellC,$tovar[0]->SELL_PRICE);
                 $sheet->setCellValue($cellD,$specSales[$j]->KOL);
 
                 if($specSales[$j]->VID_OPL==0){

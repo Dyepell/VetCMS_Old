@@ -17,7 +17,7 @@ class Other_islForm extends ActiveRecord
             'ID_OTHER'=>'ID анализа',
             'ID_PAC'=>'ID пациента',
             'DATE'=>'Дата',
-            'OP'=>'Описание',
+            'OP'=>'Заключение',
 
 
 

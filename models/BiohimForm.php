@@ -32,6 +32,7 @@ class BiohimForm extends ActiveRecord
             'KALIY'=>'Калий',
             'KALCIY'=>'Кальций',
             'SHELOCH'=>'Щелочная фосфатаза',
+            'HOL'=>'Холестерин',
 
 
         ];
@@ -40,7 +41,7 @@ class BiohimForm extends ActiveRecord
     {
         return [
             [["ID_BIOHIM", "ID_PAC", "DATE", "BELOK", "BILIRUB_OBSH", "BILIRUB_PR", "BILIRUB_NEPR", "AC_AT", "AL_AT", "SUGAR", "MOCH",
-                "KREATIN", "LDG", "GAMMA_GTP", "AMILAZA", "KALIY", "KALCIY", "SHELOCH"], 'safe'],
+                "KREATIN", "LDG", "GAMMA_GTP", "AMILAZA", "KALIY", "KALCIY", "SHELOCH", "FOSFOR", "HOL"], 'safe'],
 
 
         ];

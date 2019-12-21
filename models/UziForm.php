@@ -17,7 +17,7 @@ class UziForm extends ActiveRecord
             'ID_BIOHIM'=>'ID анализа',
             'ID_PAC'=>'ID пациента',
             'DATE'=>'Дата',
-            'OP'=>'Описание',
+            'OP'=>'Заключение',
 
 
 

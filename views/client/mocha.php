@@ -15,6 +15,7 @@ use yii\widgets\ActiveForm; ?>
         <div style="display: flex;">
             <?= $form->field($blood, 'ID_MOCHA')->textInput(['readonly'=>'readonly'])?>
             <?= $form->field($blood, 'DATE')->textInput()?>
+            <a href="index.php?r=client/printmocha&ID_MOCHA=<?=$blood->ID_MOCHA?>" class="btn btn-success" style="height: 35px;margin-top: 25px;margin-left: 30px;">На печать</a>
         </div>
         <table class="table table-bordered">
             <thead>
@@ -140,14 +141,14 @@ use yii\widgets\ActiveForm; ?>
                 <td><?= $form->field($blood, 'SLIZ')->textInput(['autocomplete'=>'off'])->label(false)?></td>
             </tr>
             <tr>
-                <th>16</th>
+                <th>17</th>
                 <td>Соли</td>
                 <td></td>
                 <td></td>
                 <td><?= $form->field($blood, 'SULT')->textInput(['autocomplete'=>'off'])->label(false)?></td>
             </tr>
             <tr>
-                <th>16</th>
+                <th>18</th>
                 <td>Бактерии</td>
                 <td></td>
                 <td></td>

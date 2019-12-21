@@ -17,7 +17,7 @@ use yii\widgets\ActiveForm; ?>
     ])->label('Наименование товара');?>
     <?= $form->field($model, 'KOL')->textInput(['autocomplete'=>'off'])->label('Количество')?>
     <?= $form->field($model, 'PRICE')->textInput(['autocomplete'=>'off'])->label('Цена закупки')?>
-    <?= $form->field($model, 'SUMM')->textInput(['autocomplete'=>'off','readonly'=>'readonly'])->label('Сумма')?>
+    <?= $form->field($model, 'SELL_PRICE')->textInput(['autocomplete'=>'off'])?>
     <?= $form->field($model, 'DATE')->textInput(['autocomplete'=>'off'])->label('Дата')?>
     <div class="row">
         <div class="col-md-2"><?= Html::submitButton('Сохранить',['class'=>'btn btn-success'])?></div>

@@ -62,7 +62,7 @@ $form = ActiveForm::begin(['options'=>['id'=>'searchForm','data-pjax' => true,]]
 
                     ],
 
-                    'ID_CL',
+
                     'FAM',
                     'NAME',
                     'OTCH',
@@ -172,7 +172,7 @@ Pjax::end();?>
                             },],
 
                 ],
-                    'ID_CL',
+
                     'FAM',
                     'NAME',
                     'OTCH',
@@ -228,7 +228,7 @@ Pjax::end();?>
             <tr>
 
                 <td><?=$pacient->vid->NAMEVID?></td>
-                <td><?=$pacient->KLICHKA?></td>
+                <td><a href="index.php?r=client/visits&pacientId=<?=$pacient->ID_PAC?>"><?=$pacient->KLICHKA?></a></td>
 
             </tr>
             <?php endforeach;?>

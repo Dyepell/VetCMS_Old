@@ -3,7 +3,7 @@
 use yii\grid\GridView;
 use yii\helpers\Html; ?>
 <div class="row container-fluid " style="margin-top: 70px;">
-    <span style="font-size: 200%">Исследования: <a href="index.php?r=client/anketa&clientId=<?=$pacient->ID_CL?>" class="clientLink"><?=$pacient->KLICHKA?></a></span>
+    <span style="font-size: 200%">Исследования: <a href="index.php?r=client/visits&pacientId=<?=$pacient->ID_PAC?>" class="clientLink"><?=$pacient->KLICHKA?></a></span>
     <div class="container-fluid row">
         <div class="col-md-4">
             <span style="font-size: 150%">Общий анализ крови </span>
@@ -24,14 +24,8 @@ use yii\helpers\Html; ?>
 
                     ],
 
-                    ['label' => 'ID анализа',
-                        'attribute' => 'ID_BLOOD',
 
-                    ],
-                    ['label' => 'ID пациента ',
-                        'attribute' => 'ID_PAC'
 
-                    ],
                     ['label' => 'Дата',
                         'attribute'=>'DATE',
                         'value'=>function($key){
@@ -68,14 +62,8 @@ use yii\helpers\Html; ?>
 
                     ],
 
-                    ['label' => 'ID анализа',
-                        'attribute' => 'ID_BIOHIM',
 
-                    ],
-                    ['label' => 'ID пациента ',
-                        'attribute' => 'ID_PAC'
 
-                    ],
                     ['label' => 'Дата',
                         'attribute' => 'DATE',
                         'value'=>function( $key){
@@ -112,14 +100,8 @@ use yii\helpers\Html; ?>
 
                     ],
 
-                    ['label' => 'ID анализа',
-                        'attribute' => 'ID_MOCHA',
 
-                    ],
-                    ['label' => 'ID пациента ',
-                        'attribute' => 'ID_PAC'
 
-                    ],
                     ['label' => 'Дата',
                         'attribute' => 'DATE',
                         'value'=>function( $key){
@@ -159,14 +141,8 @@ use yii\helpers\Html; ?>
 
                     ],
 
-                    ['label' => 'ID анализа',
-                        'attribute' => 'ID_UZI',
 
-                    ],
-                    ['label' => 'ID пациента ',
-                        'attribute' => 'ID_PAC'
 
-                    ],
                     ['label' => 'Дата',
                         'attribute' => 'DATE',
                         'value'=>function( $key){
@@ -203,14 +179,8 @@ use yii\helpers\Html; ?>
 
                     ],
 
-                    ['label' => 'ID анализа',
-                        'attribute' => 'ID_OTHER',
 
-                    ],
-                    ['label' => 'ID пациента ',
-                        'attribute' => 'ID_PAC'
 
-                    ],
                     ['label' => 'Дата',
                         'attribute' => 'DATE',
                         'value'=>function( $key){

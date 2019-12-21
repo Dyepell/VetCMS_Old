@@ -13,10 +13,11 @@ use yii\widgets\ActiveForm; ?>
         <span><a href="index.php?r=client/analysis&ID_PAC=<?=$pacient->ID_PAC?>" class="btn btn-primary">Исследования</a></span>
         <?php $form = ActiveForm::begin(['options'=>['id'=>'priceForm']]) ?>
         <div style="display: flex;">
-            <?= $form->field($blood, 'ID_OTHER')->textInput(['readonly'=>'readonly'])?>
-            <?= $form->field($blood, 'DATE')->textInput()?>
+            <?= $form->field($blood, 'ID_OTHER')->textInput(['readonly'=>'readonly'])->label('ID')?>
+            <?= $form->field($blood, 'DATE')->textInput()->label('Дата')?>
+            <a href="index.php?r=client/printother&ID_OTHER=<?=$blood->ID_OTHER?>" class="btn btn-success" style="height: 35px;margin-top: 25px;margin-left: 30px;">На печать</a>
         </div>
-        <?= $form->field($blood, 'OP')->textarea(['rows'=>10])?>
+        <?= $form->field($blood, 'OP')->textarea(['rows'=>25])->label('Описание')?>
         <div class="row">
 
             <div class="col-md-2"><?= Html::submitButton('Сохранить',['class'=>'btn btn-success'])?></div>

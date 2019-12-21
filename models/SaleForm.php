@@ -16,7 +16,7 @@ class SaleForm extends ActiveRecord
     {
         return [
             'ID_SALE'=>'ID продажи',
-            'ID_TOV'=>'Товар',
+            'ID_PRIHOD'=>'Товар',
             'SOTRUDNIK'=>'Сотрудник',
             'NAME'=>'Наименование товара',
             'KOL'=>'Количество',
@@ -32,7 +32,7 @@ class SaleForm extends ActiveRecord
     public function rules()
     {
         return [
-            [["ID_SALE", "ID_TOV", "SOTRUDNIK", "NAME", "KOL", "SKIDKA", "VID_OPL", "DATE", 'SUMM'], 'safe'],
+            [["ID_SALE", "ID_PRIHOD", "SOTRUDNIK", "NAME", "KOL", "SKIDKA", "VID_OPL", "DATE", 'SUMM'], 'safe'],
 
 
 

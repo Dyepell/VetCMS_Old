@@ -26,7 +26,7 @@ use yii\widgets\ActiveForm; ?>
 
                                     $myurl='index.php?r=client/saledelete&ID_SALE='.$key['ID_SALE'];
 
-                                    return Html::a('<span class="glyphicon glyphicon-trash" style="margin-left: 5px;"></span>', $myurl,[
+                                    return Html::a('<span class="glyphicon glyphicon-trash" onclick=\'return confirm("Вы уверены?")\' style="margin-left: 5px;"></span>', $myurl,[
                                         'title' => Yii::t('app', 'Удалить'),
                                     ]);
                                 },],
@@ -49,10 +49,10 @@ use yii\widgets\ActiveForm; ?>
                         ],
 
                         ['label' => 'Товар',
-                            'attribute' => 'ID_TOV',
+                            'attribute' => 'ID_PRIHOD',
                             'value'=>function($key){
-                                $spdoc=\app\models\Kattov::findOne(['ID_TOV'=>$key->ID_TOV]);
-                                $spdoc=$spdoc->NAME;
+                                $spdoc=\app\models\Prihod_tovara::find()->where(['ID_PRIHOD'=>$key->ID_PRIHOD])->joinWith('tovar')->all();
+                                $spdoc=$spdoc[0]->tovar->NAME;
                                 return $spdoc;
                             }
 
@@ -62,10 +62,7 @@ use yii\widgets\ActiveForm; ?>
 
                         ],
 
-                        ['label' => 'Скидка, %',
-                            'attribute' => 'SKIDKA'
 
-                        ],
                         ['label' => 'Сумма',
                             'attribute' => 'SUMM'
 
